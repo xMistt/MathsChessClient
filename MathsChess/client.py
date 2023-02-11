@@ -1,10 +1,13 @@
 import aiohttp
 import os
 import random
+import asyncio
 
 
 class ChessClient:
-    def __init__(self) -> None:
+    def __init__(self, loop) -> None:
+        self.loop = loop or asyncio.get_event_loop()
+
         self.session = None
 
         self.local_username = ""

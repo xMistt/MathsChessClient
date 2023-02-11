@@ -49,7 +49,7 @@ class MainMenu(tkinter.Frame):
             image=self.settings_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: messagebox.showerror(title='Error', message='Not implemented yet.'),
+            command=lambda: master.switch_frame(master.frames["Settings"]),
             relief='flat',
             bg='#262422',
             activebackground='#262422'

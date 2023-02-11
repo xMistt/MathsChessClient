@@ -2,6 +2,7 @@ import tkinter
 import asyncio
 
 from .mainmenu import MainMenu
+from .settings import Settings
 
 
 class GUI(tkinter.Tk):
@@ -17,6 +18,11 @@ class GUI(tkinter.Tk):
         self.iconphoto(False, photo)
 
         self._frame = None
+        self.frames = {
+            "MainMenu": MainMenu,
+            "Settings": Settings
+        }
+
         self.switch_frame(MainMenu)
 
     def switch_frame(self, frame_class) -> None:
