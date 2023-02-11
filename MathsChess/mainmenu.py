@@ -60,7 +60,7 @@ class MainMenu(tkinter.Frame):
             10,
             580,
             anchor='w',
-            text=f'Logged in as: {master.client.username}',
+            text=f'Logged in as: {master.client.server_username}',
             fill='#FFFFFF',
             font=('Montserrat ExtraBold', -23)
         )
