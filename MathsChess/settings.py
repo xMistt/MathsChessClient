@@ -1,10 +1,13 @@
 import tkinter
+import json
 
 from tkinter import messagebox
 
 
 class Settings(tkinter.Frame):
     def __init__(self, master) -> None:
+        self.master = master
+
         tkinter.Frame.__init__(self, master)
         canvas = tkinter.Canvas(
             self,
@@ -44,7 +47,7 @@ class Settings(tkinter.Frame):
             image=self.back_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: master.switch_frame(master.frames["MainMenu"]),
+            command=lambda: self.master.switch_frame(master.frames["MainMenu"]),
             relief="flat",
             bg='#262422',
             activebackground='#262422'
@@ -56,7 +59,7 @@ class Settings(tkinter.Frame):
             image=self.apply_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: master.client.loop.create_task(self.change_username(username=edit_username.get())),
+            command=lambda: self.master.client.loop.create_task(self.change_username(new_username=edit_username.get())),
             relief="flat",
             bg='#262422',
             activebackground='#262422'
@@ -65,6 +68,24 @@ class Settings(tkinter.Frame):
 
         canvas.pack()
 
-    async def change_username(self, username: str) -> None:
-        print(username)
-        messagebox.showinfo(title='Error', message='Applied settings.')
+    async def change_username(self, new_username: str) -> None:
+        async with self.master.client.session.request(
+            method="POST",
+            url="http://localhost/api/update_username",
+            headers={
+                "Authorization": self.master.client.access_token
+            },
+            data=json.dumps({
+                "old_username": self.master.client.local_username,
+                "new_username": new_username
+            })
+        ) as request:
+            data = await request.json()
+            print(json.dumps(data, sort_keys=False, indent=4))
+
+            if 'error' in data:
+                return messagebox.showerror(title='Error', message=data['error'])
+
+            await self.master.client.update_settings(username=data['new_username'])
+            self.master.client.server_username = data['new_username']
+            messagebox.showinfo(title='Success', message='Applied settings.')

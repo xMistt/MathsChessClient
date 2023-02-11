@@ -2,6 +2,8 @@ import aiohttp
 import os
 import random
 import asyncio
+import json
+import aiofiles
 
 
 class ChessClient:
@@ -32,6 +34,13 @@ Username=Guest{random.randint(10000, 99999)}""")
                 if line.startswith('Username='):
                     self.local_username = line.split('=')[1]
 
+    async def update_settings(self, username: str) -> None:
+        self.local_username = username
+
+        async with aiofiles.open(os.path.expanduser('~/Documents/MathsChess/GameSettings.ini'), mode='w') as fp:
+            await fp.write(f"""[SETTINGS]
+Username={username}""")
+
     async def login(self, username: str) -> None:
         self.session = aiohttp.ClientSession()
 
@@ -43,6 +52,7 @@ Username=Guest{random.randint(10000, 99999)}""")
             }
         ) as request:
             data = await request.json()
+            print(json.dumps(data, sort_keys=False, indent=4))
 
             self.access_token = data['access_token']
             self.server_username = data['username']

@@ -5,6 +5,8 @@ from tkinter import messagebox
 
 class MainMenu(tkinter.Frame):
     def __init__(self, master) -> None:
+        self.master = master
+
         tkinter.Frame.__init__(self, master)
         canvas = tkinter.Canvas(
             self,
@@ -49,7 +51,7 @@ class MainMenu(tkinter.Frame):
             image=self.settings_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: master.switch_frame(master.frames["Settings"]),
+            command=lambda: self.master.switch_frame(self.master.frames["Settings"]),
             relief='flat',
             bg='#262422',
             activebackground='#262422'
@@ -60,7 +62,7 @@ class MainMenu(tkinter.Frame):
             10,
             580,
             anchor='w',
-            text=f'Logged in as: {master.client.server_username}',
+            text=f'Logged in as: {self.master.client.server_username}',
             fill='#FFFFFF',
             font=('Montserrat ExtraBold', -23)
         )
@@ -69,7 +71,7 @@ class MainMenu(tkinter.Frame):
             790,
             580,
             anchor='e',
-            text=f'Rating: {master.client.rating}',
+            text=f'Rating: {self.master.client.rating}',
             fill='#FFFFFF',
             font=('Montserrat ExtraBold', -23)
         )
