@@ -6,7 +6,7 @@ client = MathsChess.ChessClient(loop=loop)
 
 
 async def main() -> None:
-    await client.login(username="mistxoli")
+    await client.login()
 
     window = MathsChess.GUI(client=client)
     window.resizable(width=False, height=False)
