@@ -1,4 +1,3 @@
-# Hellew.
 import MathsChess
 import asyncio
 
