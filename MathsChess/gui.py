@@ -3,6 +3,7 @@ import asyncio
 
 from .mainmenu import MainMenu
 from .settings import Settings
+from .game import Game
 
 
 class GUI(tkinter.Tk):
@@ -20,7 +21,8 @@ class GUI(tkinter.Tk):
         self._frame = None
         self.frames = {
             "MainMenu": MainMenu,
-            "Settings": Settings
+            "Settings": Settings,
+            "Game": Game
         }
 
         self.switch_frame(MainMenu)

@@ -39,7 +39,7 @@ class MainMenu(tkinter.Frame):
             image=self.play_bots_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: messagebox.showerror(title='Error', message='Not implemented yet.'),
+            command=lambda: self.master.switch_frame(self.master.frames["Game"]),
             relief='flat',
             bg='#262422',
             activebackground='#262422'

@@ -69,28 +69,23 @@ class Settings(tkinter.Frame):
         canvas.pack()
 
     async def change_username(self, new_username: str) -> None:
-        if self.master.client.session:
-            async with self.master.client.session.request(
-                method="POST",
-                url="http://localhost/api/update_username",
-                headers={
-                    "Authorization": self.master.client.access_token
-                },
-                data=json.dumps({
-                    "old_username": self.master.client.local_username,
-                    "new_username": new_username
-                })
-            ) as request:
-                data = await request.json()
-                print(json.dumps(data, sort_keys=False, indent=4))
-        else:
-            data = {
-                "error": "You cannot change your username as a guest."
-            }
+        async with self.master.client.session.request(
+            method="POST",
+            url="http://mathschess.com/api/update_username",
+            headers={
+                "Authorization": self.master.client.access_token
+            },
+            data=json.dumps({
+                "old_username": self.master.client.local_username,
+                "new_username": new_username
+            })
+        ) as request:
+            data = await request.json()
+            print(json.dumps(data, sort_keys=False, indent=4))
 
-        if 'error' in data:
-            return messagebox.showerror(title='Error', message=data['error'])
+            if 'error' in data:
+                return messagebox.showerror(title='Error', message=data['error'])
 
-        await self.master.client.update_settings(username=data['new_username'])
-        self.master.client.server_username = data['new_username']
-        messagebox.showinfo(title='Success', message='Applied settings.')
+            await self.master.client.update_settings(username=data['new_username'])
+            self.master.client.server_username = data['new_username']
+            messagebox.showinfo(title='Success', message='Applied settings.')
